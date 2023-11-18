@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Erişilebilir Combobox Örneği</title>
+    <style>
+        .combobox-container {
+            position: relative;
+            width: 300px;
+        }
+
+        .combobox-input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .combobox-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            z-index: 1000;
+            width: 100%;
+            border: 1px solid #ccc;
+            background: white;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
+
+        .combobox-option {
+            padding: 8px;
+            cursor: pointer;
+        }
+
+        .combobox-option:hover, .combobox-option:focus {
+            background-color: #f0f0f0;
+        }
+
+        .combobox-option[aria-selected="true"] {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="combobox-container" role="combobox" aria-expanded="false" aria-owns="combobox-list" aria-haspopup="listbox" aria-label="Şehir Seç">
+        <input type="text" id="combobox-input" class="combobox-input" aria-autocomplete="list" aria-controls="combobox-list" aria-label="Şehir Seçin">
+        <ul id="combobox-list" class="combobox-list" role="listbox" aria-labelledby="combobox-input">
+            <!-- JavaScript ile doldurulacak seçenekler -->
+        </ul>
+    </div>
+
+    <script>
+        const cities = ["İstanbul", "Ankara", "İzmir", "Bursa", "Antalya", "Adana", "Konya", "Gaziantep"];
+        const input = document.getElementById('combobox-input');
+        const list = document.getElementById('combobox-list');
+        let activeIndex = -1;
+
+        function updateListItems() {
+            const value = input.value.toLowerCase();
+            list.innerHTML = '';
+            cities.forEach((city, index) => {
+                if (city.toLowerCase().includes(value)) {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = city;
+                    listItem.setAttribute('role', 'option');
+                    listItem.setAttribute('id', 'option-' + index);
+                    listItem.classList.add('combobox-option');
+                    listItem.addEventListener('click', function() {
+                        input.value = this.textContent;
+                        list.style.display = 'none';
+                        input.setAttribute('aria-activedescendant', '');
+                        list.setAttribute('aria-expanded', 'false');
+                        activeIndex = -1;
+                    });
+                    list.appendChild(listItem);
+                }
+            });
+
+            list.style.display = list.childElementCount ? 'block' : 'none';
+            list.setAttribute('aria-expanded', list.childElementCount ? 'true' : 'false');
+        }
+
+        input.addEventListener('input', updateListItems);
+
+        input.addEventListener('keydown', function(event) {
+            const items = list.querySelectorAll('.combobox-option');
+            if (event.key === 'ArrowDown' && activeIndex < items.length - 1) {
+                activeIndex++;
+                input.setAttribute('aria-activedescendant', 'option-' + activeIndex);
+                items[activeIndex].setAttribute('aria-selected', 'true');
+                if (activeIndex > 0) items[activeIndex - 1].removeAttribute('aria-selected');
+            } else if (event.key === 'ArrowUp' && activeIndex > 0) {
+                activeIndex--;
+                input.setAttribute('aria-activedescendant', 'option-' + activeIndex);
+                items[activeIndex].setAttribute('aria-selected', 'true');
+                items[activeIndex + 1].removeAttribute('aria-selected');
+            } else if (event.key === 'Enter' && activeIndex >= 0) {
+                input.value = items[activeIndex].textContent;
+                list.style.display = 'none';
+                input.setAttribute('aria-activedescendant', '');
+                list.setAttribute('aria-expanded', 'false');
+                activeIndex = -1;
+            }
+        });
+
+        input.addEventListener('focus', updateListItems);
+
+        input.addEventListener('blur', function() {
+            setTimeout(() => {
+                list.style.display = 'none';
+                list.setAttribute('aria-expanded', 'false');
+                input.setAttribute('aria-activedescendant', '');
+                activeIndex = -1;
+            }, 100);
+        });
+    </script>
+</body>
+</html>

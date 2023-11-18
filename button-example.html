@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>ARIA Uyumlu Düğme Örneği</title>
+<style>
+  /* Düğme için stil tanımlamaları */
+  .button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+</style>
+</head>
+<body>
+
+<button class="button" role="button" aria-pressed="false" onclick="toggleButton(this)">
+  Toggle Button
+</button>
+
+<script>
+  // Düğmeyi açık/kapalı durumları arasında geçiş yapacak JavaScript fonksiyonu
+  function toggleButton(btn) {
+    var isPressed = btn.getAttribute('aria-pressed') === 'true';
+    btn.setAttribute('aria-pressed', !isPressed);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>ARIA Grid Deseni Örneği</title>
+    <style>
+        /* Basit grid stil tanımlamaları */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 sütunlu bir grid */
+            gap: 10px;
+            margin: 20px;
+        }
+        .grid-cell {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        .grid-cell:focus {
+            outline: 2px solid blue; /* Odaklanıldığında görsel geri bildirim */
+        }
+    </style>
+</head>
+<body>
+
+<!-- Grid yapısı -->
+<div class="grid" role="grid" aria-readonly="true">
+    <!-- Sütun başlıkları -->
+    <div class="grid-cell" role="columnheader">Başlık 1</div>
+    <div class="grid-cell" role="columnheader">Başlık 2</div>
+    <div class="grid-cell" role="columnheader">Başlık 3</div>
+
+    <!-- Grid hücreleri -->
+    <!-- Her hücre tabindex ile erişilebilir yapılır ve role ile işaretlenir -->
+    <div class="grid-cell" role="gridcell" tabindex="0">Veri 1</div>
+    <div class="grid-cell" role="gridcell" tabindex="0">Veri 2</div>
+    <div class="grid-cell" role="gridcell" tabindex="0">Veri 3</div>
+    <!-- Daha fazla hücre eklenebilir -->
+</div>
+
+<script>
+    // Klavye etkileşimi için JavaScript
+    document.querySelector('.grid').addEventListener('keydown', function(e) {
+        let focusedElement = document.activeElement;
+        let handled = false;
+
+        if (focusedElement && focusedElement.classList.contains('grid-cell')) {
+            switch (e.key) {
+                case 'ArrowRight':
+                    // Sağa hareket
+                    moveFocus(focusedElement, 1);
+                    handled = true;
+                    break;
+                case 'ArrowLeft':
+                    // Sola hareket
+                    moveFocus(focusedElement, -1);
+                    handled = true;
+                    break;
+                // Diğer yön tuşları için benzer işlemler eklenebilir
+            }
+
+            if (handled) {
+                e.preventDefault();
+            }
+        }
+    });
+
+    function moveFocus(currentElement, delta) {
+        let cells = Array.from(document.querySelectorAll('.grid-cell[tabindex="0"]'));
+        let currentIndex = cells.indexOf(currentElement);
+        let newIndex = currentIndex + delta;
+
+        if (newIndex >= 0 && newIndex < cells.length) {
+            cells[newIndex].focus();
+        }
+    }
+</script>
+
+</body>
+</html>

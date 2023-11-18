@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG Uyumlu Sekme Bileşeni</title>
+    <style>
+        /* Sekme Stilleri */
+        .tablist {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .tablist li {
+            display: inline-block;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .tabpanel {
+            display: none;
+        }
+
+        .tabpanel.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <ul class="tablist" role="tablist" aria-label="Örnek Sekmeler">
+        <li role="tab" aria-selected="true" aria-controls="panel1" id="tab1">Sekme 1</li>
+        <li role="tab" aria-selected="false" aria-controls="panel2" id="tab2">Sekme 2</li>
+        <li role="tab" aria-selected="false" aria-controls="panel3" id="tab3">Sekme 3</li>
+    </ul>
+    <div class="tabpanel active" role="tabpanel" aria-labelledby="tab1" id="panel1">
+        İçerik 1
+    </div>
+    <div class="tabpanel" role="tabpanel" aria-labelledby="tab2" id="panel2">
+        İçerik 2
+    </div>
+    <div class="tabpanel" role="tabpanel" aria-labelledby="tab3" id="panel3">
+        İçerik 3
+    </div>
+
+    <script>
+        // Sekme işlevselliğini yöneten JavaScript
+        const tabs = document.querySelectorAll('[role="tab"]');
+        const panels = document.querySelectorAll('.tabpanel');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Tüm sekmeleri ve panelleri pasif yap
+                tabs.forEach(t => t.setAttribute('aria-selected', 'false'));
+                panels.forEach(p => p.classList.remove('active'));
+
+                // Seçilen sekmeyi ve paneli aktif yap
+                tab.setAttribute('aria-selected', 'true');
+                const panelId = tab.getAttribute('aria-controls');
+                document.getElementById(panelId).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

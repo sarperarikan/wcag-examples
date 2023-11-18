@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>ARIA Uyumlu Checkbox Örneği</title>
+<style>
+  /* Checkbox için stil tanımlamaları */
+  .checkbox {
+    margin: 10px;
+    cursor: pointer;
+  }
+  .checkbox input {
+    margin-right: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="checkbox" role="group" aria-labelledby="checkbox-group-label">
+  <p id="checkbox-group-label">Seçenekler</p>
+  <label>
+    <input type="checkbox" role="checkbox" aria-checked="false" onclick="toggleCheckbox(this)">
+    Seçenek 1
+  </label>
+  <label>
+    <input type="checkbox" role="checkbox" aria-checked="false" onclick="toggleCheckbox(this)">
+    Seçenek 2
+  </label>
+  <!-- Üç durumlu checkbox örneği -->
+  <label>
+    <input type="checkbox" role="checkbox" aria-checked="mixed" onclick="toggleCheckbox(this)">
+    Üç Durumlu Seçenek
+  </label>
+</div>
+
+<script>
+  // Checkbox durumunu değiştiren JavaScript fonksiyonu
+  function toggleCheckbox(checkbox) {
+    var isChecked = checkbox.getAttribute('aria-checked') === 'true';
+    var isMixed = checkbox.getAttribute('aria-checked') === 'mixed';
+    if (isMixed || !isChecked) {
+      checkbox.setAttribute('aria-checked', 'true');
+    } else {
+      checkbox.setAttribute('aria-checked', 'false');
+    }
+  }
+</script>
+
+</body>
+</html>

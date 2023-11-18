@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meter Component Example</title>
+    <style>
+        /* Basit CSS Stilleri */
+        .meter-container {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        meter {
+            /* Meter bileşeninin genel stilini ayarlayın */
+            width: 100%;
+            height: 20px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="meter-container">
+        <!-- ARIA etiketlemesi ve erişilebilirlik için label -->
+        <label id="battery-label" for="battery-meter">Battery Level:</label>
+        <meter id="battery-meter" min="0" max="100" value="50" aria-labelledby="battery-label"></meter>
+    </div>
+
+    <script>
+        // JavaScript ile Dinamik Davranış Ekleme
+        document.addEventListener('DOMContentLoaded', function () {
+            const batteryMeter = document.getElementById('battery-meter');
+
+            // Örnek olarak, her 2 saniyede bir rastgele değer güncellemesi yapın
+            setInterval(() => {
+                const randomValue = Math.floor(Math.random() * 100);
+                batteryMeter.value = randomValue;
+            }, 2000);
+        });
+    </script>
+</body>
+</html>

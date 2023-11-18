@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG Uyumlu Kaydırıcı</title>
+    <style>
+        /* Slider Stilleri */
+        .slider-container {
+            margin: 20px;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        /* Erişilebilirlik için görsel geri bildirim */
+        .slider:focus {
+            outline: 2px solid blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <label id="slider-label" for="range-slider">Ses Seviyesi Ayarı</label>
+        <input type="range" id="range-slider" class="slider" min="0" max="100" value="50" aria-labelledby="slider-label" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
+    </div>
+
+    <script>
+        // JavaScript ile Slider Etkileşimi
+        document.addEventListener('DOMContentLoaded', function () {
+            const slider = document.getElementById('range-slider');
+
+            slider.addEventListener('input', function () {
+                // ARIA özelliklerini güncelle
+                slider.setAttribute('aria-valuenow', slider.value);
+            });
+
+            // Klavye etkileşimleri için ek işlevsellik
+            slider.addEventListener('keydown', function (e) {
+                let value = parseInt(slider.value, 10);
+                switch (e.key) {
+                    case 'ArrowRight':
+                    case 'ArrowUp':
+                        slider.value = Math.min(value + 1, 100);
+                        break;
+                    case 'ArrowLeft':
+                    case 'ArrowDown':
+                        slider.value = Math.max(value - 1, 0);
+                        break;
+                    case 'Home':
+                        slider.value = 0;
+                        break;
+                    case 'End':
+                        slider.value = 100;
+                        break;
+                }
+                slider.setAttribute('aria-valuenow', slider.value);
+            });
+        });
+    </script>
+</body>
+</html>

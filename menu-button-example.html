@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menü Butonu Örneği</title>
+    <style>
+        /* Basit CSS Stilleri */
+        .menu-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .menu-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .menu-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+        .menu-content a:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <button class="menu-button" aria-haspopup="true" aria-expanded="false">Menü</button>
+        <div class="menu-content" role="menu">
+            <a href="#" role="menuitem">Link 1</a>
+            <a href="#" role="menuitem">Link 2</a>
+            <a href="#" role="menuitem">Link 3</a>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript ile Menü Etkileşimi
+        document.addEventListener('DOMContentLoaded', function () {
+            const menuButton = document.querySelector('.menu-button');
+            const menuContent = document.querySelector('.menu-content');
+
+            menuButton.addEventListener('click', function () {
+                const isExpanded = menuButton.getAttribute('aria-expanded') === 'true';
+                menuButton.setAttribute('aria-expanded', !isExpanded);
+                menuContent.style.display = isExpanded ? 'none' : 'block';
+            });
+
+            // Klavye etkileşimleri
+            menuButton.addEventListener('keydown', function (e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    menuButton.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

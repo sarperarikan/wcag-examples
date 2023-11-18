@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gelişmiş Erişilebilir Treeview Örneği</title>
+    <style>
+        /* Temel Treeview Stilleri */
+        .treeview {
+            border: 1px solid #ddd;
+            padding: 10px;
+            width: 300px;
+        }
+
+        /* Treeitem Stilleri */
+        .treeitem {
+            list-style: none;
+            cursor: pointer;
+        }
+
+        /* Genişletilebilir Düğümler için Stil */
+        .treeitem[aria-expanded="true"] > .expandable:before {
+            content: "▼ ";
+        }
+
+        .treeitem[aria-expanded="false"] > .expandable:before {
+            content: "► ";
+        }
+
+        /* Odaklanma Stili */
+        .treeitem:focus {
+            outline: 2px solid blue;
+        }
+    </style>
+</head>
+<body>
+    <!-- Treeview Yapısı -->
+    <ul class="treeview" role="tree" aria-label="Örnek Treeview">
+        <li class="treeitem" role="treeitem" aria-expanded="false" tabindex="0">
+            <span class="expandable">Kategori 1</span>
+            <ul role="group">
+                <li class="treeitem" role="treeitem" tabindex="-1">Alt Kategori 1.1</li>
+                <li class="treeitem" role="treeitem" tabindex="-1">Alt Kategori 1.2</li>
+            </ul>
+        </li>
+        <li class="treeitem" role="treeitem" tabindex="-1">
+            Kategori 2
+        </li>
+    </ul>
+
+    <script>
+        // Treeview Etkileşimleri için JavaScript
+        const treeItems = document.querySelectorAll('.treeview .treeitem');
+
+        treeItems.forEach(item => {
+            item.addEventListener('keydown', e => {
+                let handled = false;
+                switch (e.key) {
+                    case 'ArrowRight':
+                        // Sağ ok tuşu ile genişletme
+                        if (item.hasAttribute('aria-expanded')) {
+                            item.setAttribute('aria-expanded', 'true');
+                            handled = true;
+                        }
+                        break;
+                    case 'ArrowLeft':
+                        // Sol ok tuşu ile daraltma
+                        if (item.hasAttribute('aria-expanded')) {
+                            item.setAttribute('aria-expanded', 'false');
+                            handled = true;
+                        }
+                        break;
+                    case 'ArrowDown':
+                        // Aşağı ok tuşu ile bir sonraki öğeye geçiş
+                        moveFocus(item, 1);
+                        handled = true;
+                        break;
+                    case 'ArrowUp':
+                        // Yukarı ok tuşu ile bir önceki öğeye geçiş
+                        moveFocus(item, -1);
+                        handled = true;
+                        break;
+                }
+                if (handled) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+            });
+        });
+
+        function moveFocus(currentItem, direction) {
+            const items = Array.from(treeItems);
+            const currentIndex = items.indexOf(currentItem);
+            const nextIndex = currentIndex + direction;
+
+            if (nextIndex >= 0 && nextIndex < items.length) {
+                items[nextIndex].focus();
+            }
+        }
+    </script>
+</body>
+</html>

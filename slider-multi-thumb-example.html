@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG Uyumlu Çoklu Başlıklı Kaydırıcı</title>
+    <style>
+        /* Slider Stilleri */
+        .slider-container {
+            margin: 20px;
+        }
+
+        .slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        /* Erişilebilirlik için görsel geri bildirim */
+        .slider-thumb:focus {
+            outline: 2px solid blue;
+        }
+
+        /* Slider başlıklarını özelleştir */
+        .slider-thumb {
+            width: 20px;
+            height: 20px;
+            background-color: #4CAF50;
+            border-radius: 50%;
+            position: relative;
+            /* Başlıkların üst üste gelmesini önle */
+            z-index: 1;
+        }
+
+        /* Aktif başlık stilini belirle */
+        .slider-thumb.active {
+            background-color: #f44336;
+        }
+    </style>
+</head>
+<body>
+    <div class="slider-container">
+        <label id="slider-label" for="range-slider">Fiyat Aralığı: <span id="price-range"></span></label>
+        <div class="slider" aria-labelledby="slider-label">
+            <div class="slider-thumb" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="25" style="left: 25%;"></div>
+            <div class="slider-thumb" tabindex="0" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="75" style="left: 75%;"></div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript ile Çoklu Başlıklı Slider Etkileşimi
+        document.addEventListener('DOMContentLoaded', function () {
+            const sliderContainer = document.querySelector('.slider-container');
+            const thumbs = sliderContainer.querySelectorAll('.slider-thumb');
+            let activeThumb = null;
+
+            // Başlık etkileşimlerini yönet
+            thumbs.forEach(thumb => {
+                thumb.addEventListener('focus', () => {
+                    activeThumb = thumb;
+                    thumb.classList.add('active');
+                });
+
+                thumb.addEventListener('blur', () => {
+                    thumb.classList.remove('active');
+                });
+
+                thumb.addEventListener('keydown', (e) => {
+                    handleThumbKeydown(e, thumb);
+                });
+            });
+
+            // Klavye etkileşimlerini işle
+            function handleThumbKeydown(e, thumb) {
+                let value = parseInt(thumb.style.left, 10);
+                switch (e.key) {
+                    case 'ArrowRight':
+                    case 'ArrowUp':
+                        value = Math.min(value + 1, 100);
+                        break;
+                    case 'ArrowLeft':
+                    case 'ArrowDown':
+                        value = Math.max(value - 1, 0);
+                        break;
+                }
+                thumb.style.left = `${value}%`;
+                thumb.setAttribute('aria-valuenow', value);
+                updatePriceRange();
+            }
+
+            // Fiyat aralığını güncelle
+            function updatePriceRange() {
+                const range = document.getElementById('price-range');
+                const values = Array.from(thumbs).map(thumb => thumb.style.left);
+                range.textContent = values.join(' - ');
+            }
+        });
+    </script>
+</body>
+</html>

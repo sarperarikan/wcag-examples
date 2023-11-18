@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Link Deseni Örneği</title>
+    <style>
+        /* Basit stil tanımlamaları */
+        a {
+            color: blue;
+            text-decoration: none;
+        }
+        a:hover, a:focus {
+            text-decoration: underline;
+        }
+        .image-link img {
+            border: 2px solid transparent;
+        }
+        .image-link img:focus, .image-link img:hover {
+            border-color: blue;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Standart HTML Bağlantısı -->
+<a href="https://www.example.com" role="link">Example.com'a Git</a>
+
+<!-- Resimli Link -->
+<a href="https://www.example.com" class="image-link" role="link">
+    <img src="example-image.jpg" alt="Example.com'a Git">
+</a>
+
+<!-- JavaScript ile Geliştirilmiş Bağlantı -->
+<a href="#" role="link" id="advancedLink">Gelişmiş İşlevsellik</a>
+
+<!-- JavaScript:void(0) Kullanımı -->
+<a href="javascript:void(0);" role="link" id="jsVoidLink">JavaScript Void Link</a>
+
+<script>
+    // JavaScript ile bağlantıya ek işlevsellik ekleniyor
+    document.getElementById('advancedLink').addEventListener('click', function(event) {
+        event.preventDefault(); // Varsayılan bağlantı davranışını engeller
+        alert('Gelişmiş işlevsellik burada yer alır!');
+    });
+
+    // JavaScript:void(0) bağlantısı için işlevsellik
+    document.getElementById('jsVoidLink').addEventListener('click', function() {
+        alert('JavaScript void(0) linki tıklandı!');
+    });
+</script>
+
+</body>
+</html>

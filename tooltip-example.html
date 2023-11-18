@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gelişmiş Erişilebilir Araç İpucu Örneği</title>
+    <style>
+        /* CSS Stilleri */
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+
+        .tooltip {
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            padding: 10px;
+            position: absolute;
+            z-index: 1000;
+            display: none;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .tooltip-container:hover .tooltip,
+        .tooltip-container:focus-within .tooltip,
+        .tooltip-container[aria-expanded="true"] .tooltip {
+            display: block;
+        }
+
+        /* Araç İpucu konumlandırması */
+        .tooltip {
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 10px;
+        }
+
+        /* Animasyon */
+        .tooltip {
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .tooltip-container:hover .tooltip,
+        .tooltip-container:focus-within .tooltip,
+        .tooltip-container[aria-expanded="true"] .tooltip {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Tetikleyici Öğe ve Araç İpucu -->
+    <div class="tooltip-container" tabindex="0" aria-expanded="false">
+        <button class="button">Bilgi</button>
+        <div role="tooltip" id="tooltip1" class="tooltip" aria-hidden="true">
+            Bu bir araç ipucudur. İlave bilgiler burada yer alabilir.
+        </div>
+    </div>
+
+    <script>
+        // JavaScript Kodu
+        const tooltipContainer = document.querySelector('.tooltip-container');
+        const tooltip = document.getElementById('tooltip1');
+
+        function toggleTooltip(open) {
+            tooltipContainer.setAttribute('aria-expanded', open);
+            tooltip.setAttribute('aria-hidden', !open);
+            tooltip.style.display = open ? 'block' : 'none';
+        }
+
+        tooltipContainer.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                toggleTooltip(false);
+            } else if (e.key === 'Enter' || e.key === ' ') {
+                toggleTooltip(true);
+            }
+        });
+
+        tooltipContainer.addEventListener('mouseover', function() {
+            toggleTooltip(true);
+        });
+
+        tooltipContainer.addEventListener('mouseout', function() {
+            toggleTooltip(false);
+        });
+    </script>
+</body>
+</html>

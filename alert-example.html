@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Erişilebilir Uyarı Deseni Örneği</title>
+</head>
+<body>
+
+<div role="alert" aria-live="assertive" style="visibility: hidden;">
+  Önemli bir uyarı mesajınız burada yer alacak.
+</div>
+
+<script>
+  // Uyarı mesajını göstermek için bir fonksiyon
+  function showAlert(message) {
+    const alertBox = document.querySelector('[role="alert"]');
+    alertBox.style.visibility = 'visible';
+    alertBox.textContent = message;
+
+    // Birkaç saniye sonra uyarıyı gizle
+    setTimeout(() => {
+      alertBox.style.visibility = 'hidden';
+    }, 4000);
+  }
+
+  // Sayfa yüklendikten sonra uyarıyı göster
+  window.onload = function() {
+    showAlert('Bu bir uyarı mesajıdır!');
+  };
+</script>
+
+</body>
+</html>

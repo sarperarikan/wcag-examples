@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>WCAG Uyumlu Breadcrumb Örneği</title>
+<style>
+  /* Breadcrumb için stil tanımlamaları */
+  nav.breadcrumb {
+    font-family: Arial, sans-serif;
+  }
+  .breadcrumb ol {
+    list-style: none;
+    padding: 0;
+    display: flex;
+  }
+  .breadcrumb li {
+    margin-right: 10px;
+  }
+  .breadcrumb li::after {
+    content: '>';
+    margin-left: 10px;
+  }
+  .breadcrumb li:last-child::after {
+    content: '';
+  }
+  .breadcrumb a {
+    text-decoration: none;
+    color: #0645ad;
+  }
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+  .breadcrumb [aria-current="page"] {
+    color: grey;
+    text-decoration: none;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<nav aria-label="Breadcrumb" class="breadcrumb">
+  <ol>
+    <li><a href="/">Ana Sayfa</a></li>
+    <li><a href="/kategori">Kategori</a></li>
+    <!-- Mevcut sayfa için aria-current="page" kullanılır ve bu sayfa için link verilmez -->
+    <li aria-current="page">Mevcut Sayfa</li>
+  </ol>
+</nav>
+
+<script>
+  // JavaScript ile breadcrumb'a işlevsellik ekleme örneği
+  // Bu örnekte, breadcrumb linklerine tıklandığında bir uyarı gösterilir.
+  document.querySelectorAll('.breadcrumb a').forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      event.preventDefault(); // Gerçek link işlevini engellemek için
+      alert('Breadcrumb linkine tıklandı: ' + this.href);
+      // Burada istediğiniz herhangi bir işlevi gerçekleştirebilirsiniz.
+    });
+  });
+</script>
+
+</body>
+</html>

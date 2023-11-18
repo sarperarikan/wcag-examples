@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radyo Buton Grubu Örneği</title>
+    <style>
+        /* Basit CSS Stilleri */
+        .radio-group {
+            margin: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .radio-option {
+            margin: 5px 0;
+        }
+
+        .radio-option input[type="radio"] {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="radio-group" role="radiogroup" aria-labelledby="group-label">
+        <p id="group-label">Cevap Seçenekleri</p>
+        <!-- Her radyo butonu, etiketlenmiş ve erişilebilir olmalıdır -->
+        <div class="radio-option">
+            <input type="radio" id="option-1" name="response" value="1" role="radio" aria-checked="false">
+            <label for="option-1">Seçenek 1</label>
+        </div>
+        <div class="radio-option">
+            <input type="radio" id="option-2" name="response" value="2" role="radio" aria-checked="false">
+            <label for="option-2">Seçenek 2</label>
+        </div>
+        <div class="radio-option">
+            <input type="radio" id="option-3" name="response" value="3" role="radio" aria-checked="false">
+            <label for="option-3">Seçenek 3</label>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript ile Klavye Etkileşimi ve ARIA Özelliklerini Yönetme
+        document.addEventListener('DOMContentLoaded', function () {
+            const radioButtons = document.querySelectorAll('.radio-group input[type="radio"]');
+
+            radioButtons.forEach(radio => {
+                // Klavye olaylarını dinle
+                radio.addEventListener('keydown', function (e) {
+                    let index = Array.from(radioButtons).indexOf(e.target);
+                    let nextRadio, prevRadio;
+
+                    switch (e.key) {
+                        case 'ArrowDown':
+                        case 'ArrowRight':
+                            nextRadio = radioButtons[index + 1] || radioButtons[0];
+                            nextRadio.focus();
+                            break;
+                        case 'ArrowUp':
+                        case 'ArrowLeft':
+                            prevRadio = radioButtons[index - 1] || radioButtons[radioButtons.length - 1];
+                            prevRadio.focus();
+                            break;
+                        case ' ':
+                            e.preventDefault();
+                            e.target.click();
+                            break;
+                    }
+                });
+
+                // ARIA özelliklerini güncelle
+                radio.addEventListener('change', function () {
+                    radioButtons.forEach(rb => rb.setAttribute('aria-checked', 'false'));
+                    radio.setAttribute('aria-checked', 'true');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

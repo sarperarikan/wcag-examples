@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Erişilebilir Accordion Örneği</title>
+<style>
+  .accordion .accordion-header button {
+    background-color: #eee;
+    color: #444;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: background-color 0.6s ease;
+  }
+
+  .accordion .accordion-header button[aria-expanded="true"] {
+    background-color: #ccc;
+  }
+
+  .accordion .accordion-panel {
+    background-color: white;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s ease;
+  }
+
+  .accordion .accordion-panel[aria-hidden="false"] {
+    max-height: 500px; /* Maximum height when panel is expanded */
+  }
+</style>
+</head>
+<body>
+
+<div class="accordion">
+  <h3 class="accordion-header" id="accordion1header">
+    <button aria-expanded="false" aria-controls="accordion1panel">Bölüm 1</button>
+  </h3>
+  <div id="accordion1panel" class="accordion-panel" role="region" aria-labelledby="accordion1header" aria-hidden="true">
+    İçerik 1...
+  </div>
+
+  <h3 class="accordion-header" id="accordion2header">
+    <button aria-expanded="false" aria-controls="accordion2panel">Bölüm 2</button>
+  </h3>
+  <div id="accordion2panel" class="accordion-panel" role="region" aria-labelledby="accordion2header" aria-hidden="true">
+    İçerik 2...
+  </div>
+
+  <!-- Diğer accordion bölümleri -->
+</div>
+
+<script>
+  const accordionButtons = document.querySelectorAll('.accordion .accordion-header button');
+
+  accordionButtons.forEach(button => {
+    button.addEventListener('click', function() {
+      const expanded = this.getAttribute('aria-expanded') === 'true';
+      const panel = document.getElementById(this.getAttribute('aria-controls'));
+
+      // Toggle the current panel
+      this.setAttribute('aria-expanded', !expanded);
+      panel.setAttribute('aria-hidden', expanded);
+
+      // Set the max-height to 0 if collapsed, or a high value if expanded
+      panel.style.maxHeight = expanded ? '0' : panel.scrollHeight + 'px';
+    });
+  });
+</script>
+
+</body>
+</html>

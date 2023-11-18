@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Erişilebilir Uyarı Diyalog Deseni Örneği</title>
+<style>
+  #alertDialog {
+    display: none; /* Başlangıçta diyalogu gizle */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border: 1px solid black;
+    z-index: 1000;
+  }
+</style>
+</head>
+<body>
+
+<button onclick="showDialog()">Uyarı Diyalogunu Göster</button>
+
+<div id="alertDialog" role="alertdialog" aria-labelledby="dialogLabel" aria-describedby="dialogDesc" aria-modal="true">
+  <h2 id="dialogLabel">Uyarı</h2>
+  <div id="dialogDesc">
+    Bu bir uyarı diyalog örneğidir.
+  </div>
+  <button onclick="closeDialog()">Kapat</button>
+</div>
+
+<script>
+  function showDialog() {
+    document.getElementById('alertDialog').style.display = 'block';
+  }
+
+  function closeDialog() {
+    document.getElementById('alertDialog').style.display = 'none';
+  }
+
+  document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+      closeDialog();
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Erişilebilir Araç Çubuğu Örneği</title>
+    <style>
+        /* CSS Stilleri */
+        #myToolbar {
+            display: flex;
+            background-color: #f0f0f0;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+
+        #myToolbar button {
+            margin-right: 5px;
+            padding: 5px 10px;
+        }
+
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            margin: -1px;
+            padding: 0;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            border: 0;
+        }
+
+        /* Buton odaklanma stilini belirleme */
+        #myToolbar button:focus {
+            outline: 2px solid blue;
+        }
+    </style>
+</head>
+<body>
+    <!-- Araç Çubuğu Konteynırı -->
+    <div role="toolbar" aria-labelledby="toolbarLabel" id="myToolbar" tabindex="0">
+        <span id="toolbarLabel" class="visually-hidden">Düzenleme Araçları</span>
+        <!-- Butonlar -->
+        <button aria-label="İlk İşlem" tabindex="-1">İşlem 1</button>
+        <button aria-label="İkinci İşlem" tabindex="-1">İşlem 2</button>
+        <!-- Diğer Kontroller -->
+        <!-- ... -->
+    </div>
+
+    <script>
+        // JavaScript Kodu
+        const toolbar = document.getElementById('myToolbar');
+        let buttons = toolbar.querySelectorAll('button');
+        let currentFocusIndex = 0;
+
+        // Klavye etkileşimlerini yönetmek için fonksiyon
+        function handleKeyboardNavigation(event) {
+            if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+                buttons[currentFocusIndex].tabIndex = -1; // Mevcut odaklanan butondan çık
+
+                if (event.key === 'ArrowRight') {
+                    currentFocusIndex = (currentFocusIndex + 1) % buttons.length;
+                } else if (event.key === 'ArrowLeft') {
+                    currentFocusIndex = (currentFocusIndex - 1 + buttons.length) % buttons.length;
+                }
+
+                buttons[currentFocusIndex].tabIndex = 0;
+                buttons[currentFocusIndex].focus(); // Yeni butona odaklan
+            }
+        }
+
+        // Klavye etkileşimlerini dinleme
+        toolbar.addEventListener('keydown', handleKeyboardNavigation);
+    </script>
+</body>
+</html>

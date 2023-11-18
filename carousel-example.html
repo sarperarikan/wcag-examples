@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<title>ARIA Uyumlu Carousel Örneği</title>
+<style>
+  /* Carousel için stil tanımlamaları */
+  .carousel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .carousel-slide {
+    display: none;
+  }
+  .carousel-slide.active {
+    display: block;
+  }
+  .carousel-control {
+    cursor: pointer;
+    padding: 5px 10px;
+    margin: 0 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+  }
+</style>
+</head>
+<body>
+
+<div class="carousel" aria-roledescription="carousel">
+  <button class="carousel-control" onclick="changeSlide(-1)">Önceki</button>
+  <div class="carousel-slide active" aria-roledescription="slide">
+    <img src="slide1.jpg" alt="Slide 1">
+  </div>
+  <div class="carousel-slide" aria-roledescription="slide">
+    <img src="slide2.jpg" alt="Slide 2">
+  </div>
+  <!-- Diğer slaytlar buraya eklenebilir -->
+  <button class="carousel-control" onclick="changeSlide(1)">Sonraki</button>
+</div>
+
+<script>
+  var currentSlide = 0;
+  var slides = document.querySelectorAll('.carousel-slide');
+
+  function changeSlide(direction) {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + direction + slides.length) % slides.length;
+    slides[currentSlide].classList.add('active');
+  }
+</script>
+
+</body>
+</html>

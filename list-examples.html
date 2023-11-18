@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste Kutusu Deseni Örneği</title>
+    <style>
+        /* Liste kutusu stil tanımlamaları */
+        .listbox {
+            border: 1px solid #ccc;
+            width: 200px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .listbox li {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .listbox li.selected {
+            background-color: #e7e7e7;
+        }
+        .listbox li:focus {
+            outline: none;
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Tek Seçimli Liste Kutusu -->
+<label for="singleSelectListbox">Tek Seçimli Liste Kutusu:</label>
+<ul id="singleSelectListbox" class="listbox" tabindex="0" aria-label="Tek Seçimli Liste Kutusu">
+    <li tabindex="-1" role="option" aria-selected="false">Seçenek 1</li>
+    <li tabindex="-1" role="option" aria-selected="false">Seçenek 2</li>
+    <li tabindex="-1" role="option" aria-selected="false">Seçenek 3</li>
+</ul>
+
+<!-- Çoklu Seçimli Liste Kutusu -->
+<label for="multiSelectListbox">Çoklu Seçimli Liste Kutusu:</label>
+<ul id="multiSelectListbox" class="listbox" tabindex="0" aria-label="Çoklu Seçimli Liste Kutusu" aria-multiselectable="true">
+    <li tabindex="-1" role="option" aria-selected="false">Seçenek A</li>
+    <li tabindex="-1" role="option" aria-selected="false">Seçenek B</li>
+    <li tabindex="-1" role="option" aria-selected="false">Seçenek C</li>
+</ul>
+
+<script>
+    function updateAriaSelected(item, isSelected) {
+        item.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+        if (isSelected) {
+            item.classList.add('selected');
+        } else {
+            item.classList.remove('selected');
+        }
+    }
+
+    function handleListboxNavigation(event, listbox, multiSelect) {
+        const items = Array.from(listbox.querySelectorAll('[role="option"]'));
+        let currentIndex = items.indexOf(document.activeElement);
+        let newIndex;
+
+        switch (event.key) {
+            case 'ArrowDown':
+                newIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0;
+                break;
+            case 'ArrowUp':
+                newIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1;
+                break;
+            case 'Enter':
+            case ' ':
+                if (currentIndex !== -1) {
+                    const isSelected = items[currentIndex].getAttribute('aria-selected') === 'true';
+                    if (multiSelect) {
+                        updateAriaSelected(items[currentIndex], !isSelected);
+                    } else {
+                        items.forEach(item => updateAriaSelected(item, false));
+                        updateAriaSelected(items[currentIndex], true);
+                    }
+                    event.preventDefault();
+                }
+                return;
+            default:
+                return;
+        }
+
+        if (newIndex !== undefined) {
+            items[currentIndex].setAttribute('tabindex', '-1');
+            items[newIndex].setAttribute('tabindex', '0');
+            items[newIndex].focus();
+        }
+    }
+
+    function setupListbox(listboxId, multiSelect) {
+        const listbox = document.getElementById(listboxId);
+        listbox.addEventListener('keydown', function(event) {
+            handleListboxNavigation(event, this, multiSelect);
+        });
+
+        listbox.addEventListener('click', function(event) {
+            if (event.target.getAttribute('role') === 'option') {
+                const isSelected = event.target.getAttribute('aria-selected') === 'true';
+                if (!multiSelect) {
+                    this.querySelectorAll('[role="option"]').forEach(item => updateAriaSelected(item, false));
+                }
+                updateAriaSelected(event.target, !isSelected);
+            }
+        });
+
+        // İlk öğeye odaklanabilirlik ataması
+        const firstItem = listbox.querySelector('[role="option"]');
+        if (firstItem) firstItem.setAttribute('tabindex', '0');
+    }
+
+    // Tek ve çoklu seçimli liste kutularını ayarla
+    setupListbox('singleSelectListbox', false);
+    setupListbox('multiSelectListbox', true);
+</script>
+
+</body>
+</html>

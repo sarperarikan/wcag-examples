@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WCAG Uyumlu Dönme Düğmesi (Spin Button)</title>
+    <style>
+        /* Spin Button Stilleri */
+        .spin-button-container {
+            margin: 20px;
+        }
+
+        .spin-button {
+            width: 100px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        /* Erişilebilirlik için görsel geri bildirim */
+        .spin-button:focus {
+            outline: 2px solid blue;
+        }
+    </style>
+</head>
+<body>
+    <div class="spin-button-container">
+        <label id="spin-label" for="spin-button">Miktar:</label>
+        <input type="text" id="spin-button" class="spin-button" role="spinbutton" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-labelledby="spin-label" />
+    </div>
+
+    <script>
+        // JavaScript ile Dönme Düğmesi Etkileşimi
+        document.addEventListener('DOMContentLoaded', function () {
+            const spinButton = document.getElementById('spin-button');
+
+            // Klavye etkileşimlerini işle
+            spinButton.addEventListener('keydown', (e) => {
+                let value = parseInt(spinButton.value, 10) || 0;
+                switch (e.key) {
+                    case 'ArrowUp':
+                        value = Math.min(value + 1, 100); // Değeri artır
+                        break;
+                    case 'ArrowDown':
+                        value = Math.max(value - 1, 0); // Değeri azalt
+                        break;
+                    case 'Home':
+                        value = 0; // Minimum değere ayarla
+                        break;
+                    case 'End':
+                        value = 100; // Maksimum değere ayarla
+                        break;
+                }
+                spinButton.value = value;
+                spinButton.setAttribute('aria-valuenow', value);
+            });
+        });
+    </script>
+</body>
+</html>

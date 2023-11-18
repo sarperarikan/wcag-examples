@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Açma/Kapatma Deseni Örneği</title>
+    <style>
+        /* Genel stil ayarları */
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        /* SSS bölümü stil ayarları */
+        .faq-section {
+            margin: 20px;
+        }
+
+        /* SSS düğmesi stil ayarları */
+        .faq-item button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            text-align: left;
+            outline: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        /* Düğme üzerine gelindiğinde arka plan rengi değişimi */
+        .faq-item button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Cevapların stil ayarları */
+        .faq-answer {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 3px solid #007bff;
+            display: none; /* Başlangıçta cevaplar gizli */
+        }
+    </style>
+</head>
+<body>
+
+<div class="faq-section">
+    <h2>Sıkça Sorulan Sorular</h2>
+    <!-- Her bir SSS için açma/kapatma düğmesi ve cevap bölümü -->
+    <div class="faq-item">
+        <button aria-expanded="false" aria-controls="faq1">Soru 1</button>
+        <div id="faq1" class="faq-answer">
+            Cevap 1 burada yer alacak.
+        </div>
+    </div>
+    <div class="faq-item">
+        <button aria-expanded="false" aria-controls="faq2">Soru 2</button>
+        <div id="faq2" class="faq-answer">
+            Cevap 2 burada yer alacak.
+        </div>
+    </div>
+    <!-- Daha fazla SSS maddesi eklenebilir -->
+</div>
+
+<script>
+    // Tüm açma/kapatma düğmelerini seç
+    document.querySelectorAll('.faq-item button').forEach(button => {
+        // Her düğmeye tıklama olayı ekle
+        button.addEventListener('click', () => {
+            // Açma/kapatma durumunu kontrol et ve güncelle
+            const expanded = button.getAttribute('aria-expanded') === 'true';
+            button.setAttribute('aria-expanded', !expanded);
+            // İlgili cevap bölümünü göster veya gizle
+            const answer = document.getElementById(button.getAttribute('aria-controls'));
+            answer.style.display = expanded ? 'none' : 'block';
+        });
+    });
+</script>
+
+</body>
+</html>

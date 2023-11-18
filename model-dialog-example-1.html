@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Erişilebilir Ürün Karşılaştırma Diyalogu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 50px;
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 40%;
+            box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .product-button {
+            margin: 10px;
+            padding: 10px;
+        }
+
+        #selectedProducts {
+            margin-top: 20px;
+        }
+
+        .selected-product {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <button id="openModal">Ürün Karşılaştırma</button>
+
+    <div id="comparisonModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-content">
+            <span id="closeModal" class="close" aria-label="Kapat">&times;</span>
+            <h2 id="modalTitle">Ürün Karşılaştırma</h2>
+            <div id="productList">
+                <button class="product-button" onclick="addProduct('Ürün 1')">Ürün 1 Ekle</button>
+                <button class="product-button" onclick="addProduct('Ürün 2')">Ürün 2 Ekle</button>
+            </div>
+            <div id="selectedProducts" aria-live="polite"></div>
+            <button id="compareProducts">Karşılaştır</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('openModal').addEventListener('click', function() {
+            document.getElementById('comparisonModal').style.display = 'block';
+            document.getElementById('closeModal').focus();
+        });
+
+        document.getElementById('closeModal').addEventListener('click', function() {
+            document.getElementById('comparisonModal').style.display = 'none';
+            document.getElementById('openModal').focus();
+        });
+
+        function addProduct(productName) {
+            var selectedProducts = document.getElementById('selectedProducts');
+            var product = document.createElement('div');
+            product.className = 'selected-product';
+            product.textContent = productName + ' ';
+            var removeButton = document.createElement('button');
+            removeButton.textContent = 'Çıkar';
+            removeButton.onclick = function() {
+                selectedProducts.removeChild(product);
+            };
+            product.appendChild(removeButton);
+            selectedProducts.appendChild(product);
+        }
+
+        // Klavye etkileşimlerini ve erişilebilirlik işlevlerini yönet...
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                document.getElementById('comparisonModal').style.display = 'none';
+                document.getElementById('openModal').focus();
+            }
+        });
+    </script>
+</body>
+</html>

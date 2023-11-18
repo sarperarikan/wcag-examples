@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Menü Çubuğu Örneği</title>
+    <style>
+        /* CSS Stilleri */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .menu-bar {
+            background: #f0f0f0;
+            padding: 0;
+            margin: 0;
+            list-style: none;
+            display: flex;
+        }
+        .menu-bar li {
+            padding: 10px 20px;
+            cursor: pointer;
+            position: relative;
+        }
+        .menu-bar li:hover,
+        .menu-bar li:focus {
+            background: #ddd;
+        }
+        .submenu {
+            display: none;
+            position: absolute;
+            left: 0;
+            top: 100%;
+            background: #f0f0f0;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            min-width: 100px;
+        }
+        .submenu li {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+        .submenu li:hover,
+        .submenu li:focus {
+            background: #ddd;
+        }
+        .menu-bar li:focus-within .submenu,
+        .menu-bar li:hover .submenu {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <ul class="menu-bar" role="menubar">
+        <li role="menuitem" tabindex="0" aria-haspopup="true" aria-expanded="false">Dosya
+            <ul class="submenu" role="menu" aria-label="Dosya Menüsü">
+                <li role="menuitem" tabindex="-1">Yeni</li>
+                <li role="menuitem" tabindex="-1">Aç</li>
+                <li role="menuitem" tabindex="-1">Kaydet</li>
+            </ul>
+        </li>
+        <li role="menuitem" tabindex="-1" aria-haspopup="true" aria-expanded="false">Düzen
+            <ul class="submenu" role="menu" aria-label="Düzen Menüsü">
+                <li role="menuitem" tabindex="-1">Kes</li>
+                <li role="menuitem" tabindex="-1">Kopyala</li>
+                <li role="menuitem" tabindex="-1">Yapıştır</li>
+            </ul>
+        </li>
+        <!-- Diğer menü öğeleri -->
+    </ul>
+
+    <script>
+        // JavaScript Kodları
+        const menuItems = document.querySelectorAll('.menu-bar > li');
+
+        menuItems.forEach(item => {
+            item.addEventListener('keydown', e => {
+                switch (e.key) {
+                    case 'ArrowRight':
+                        focusNextItem(item);
+                        break;
+                    case 'ArrowLeft':
+                        focusPreviousItem(item);
+                        break;
+                    case 'Enter':
+                    case 'ArrowDown':
+                        openSubmenu(item);
+                        break;
+                }
+            });
+
+            item.addEventListener('mouseover', () => openSubmenu(item));
+            item.addEventListener('mouseout', () => closeSubmenu(item));
+        });
+
+        function focusNextItem(currentItem) {
+            const nextItem = currentItem.nextElementSibling || menuItems[0];
+            nextItem.focus();
+        }
+
+        function focusPreviousItem(currentItem) {
+            const prevItem = currentItem.previousElementSibling || menuItems[menuItems.length - 1];
+            prevItem.focus();
+        }
+
+        function openSubmenu(item) {
+            const submenu = item.querySelector('.submenu');
+            if (submenu) {
+                submenu.style.display = 'block';
+                item.setAttribute('aria-expanded', 'true');
+                submenu.querySelector('li').focus();
+            }
+        }
+
+        function closeSubmenu(item) {
+            const submenu = item.querySelector('.submenu');
+            if (submenu) {
+                submenu.style.display = 'none';
+                item.setAttribute('aria-expanded', 'false');
+            }
+        }
+    </script>
+</body>
+</html>

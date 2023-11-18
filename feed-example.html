@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Feed Deseni Örneği</title>
+    <style>
+        /* Genel stil ayarları */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Feed stil ayarları */
+        #feed {
+            margin: 20px;
+        }
+
+        /* Makale stil ayarları */
+        article {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Feed (Akış) bölümü -->
+<div id="feed" role="feed" aria-busy="false">
+    <!-- İlk makaleler burada yüklenecek -->
+</div>
+
+<script>
+    // İlk makaleleri yükleme fonksiyonu
+    function loadInitialArticles() {
+        for (let i = 1; i <= 5; i++) {
+            addArticle(i);
+        }
+    }
+
+    // Yeni makale ekleme fonksiyonu
+    function addArticle(id) {
+        const article = document.createElement('article');
+        article.setAttribute('role', 'article');
+        article.setAttribute('tabindex', '0'); // Klavye erişilebilirliği için
+        article.innerHTML = `<h2>Makale Başlığı ${id}</h2><p>Makale içeriği...</p>`;
+        document.getElementById('feed').appendChild(article);
+    }
+
+    // Sayfa sonuna yaklaşıldığında yeni içerik yükleme fonksiyonu
+    window.addEventListener('scroll', () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+            addArticle(document.querySelectorAll('#feed article').length + 1);
+        }
+    });
+
+    // İlk makaleleri yükle
+    loadInitialArticles();
+</script>
+
+</body>
+</html>

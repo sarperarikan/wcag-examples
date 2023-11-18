@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Erişilebilir Model Diyalog</title>
+<style>
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+  }
+
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .button {
+    padding: 10px 20px;
+    margin: 10px;
+    cursor: pointer;
+  }
+
+  .hidden {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- Trigger/Open The Modal -->
+<button id="myBtn">Open Modal</button>
+
+<!-- The Modal -->
+<div id="myModal" class="modal" aria-hidden="true" aria-labelledby="dialogTitle" role="dialog">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close" aria-label="Close" role="button" tabindex="0">&times;</span>
+    <h2 id="dialogTitle">Confirmation</h2>
+    <p id="dialogDesc">Are you sure you want to clear your comparison?</p>
+    <button class="button" id="continueBtn">Continue</button>
+    <button class="button" id="nevermindBtn">Nevermind</button>
+  </div>
+
+</div>
+
+<script>
+// Get the modal
+var modal = document.getElementById('myModal');
+
+// Get the button that opens the modal
+var btn = document.getElementById('myBtn');
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName('close')[0];
+
+// Get the continue and nevermind buttons
+var continueBtn = document.getElementById('continueBtn');
+var nevermindBtn = document.getElementById('nevermindBtn');
+
+// When the user clicks the button, open the modal 
+btn.onclick = function() {
+  modal.style.display = 'block';
+  modal.setAttribute('aria-hidden', 'false');
+  continueBtn.focus(); // Set focus to the continue button
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden', 'true');
+  btn.focus(); // Set focus back to the button that opened the modal
+}
+
+// When the user clicks continue
+continueBtn.onclick = function() {
+  // Perform the continue action
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden', 'true');
+  btn.focus(); // Set focus back to the button that opened the modal
+}
+
+// When the user clicks nevermind
+nevermindBtn.onclick = function() {
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden', 'true');
+  btn.focus(); // Set focus back to the button that opened the modal
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    btn.focus(); // Set focus back to the button that opened the modal
+  }
+}
+
+// Allow the modal to be closed with the ESC key
+document.onkeydown = function(evt) {
+  evt = evt || window.event;
+  var isEscape = false;
+  if ("key" in evt) {
+    isEscape = (evt.key === "Escape" || evt.key === "Esc");
+  } else {
+    isEscape = (evt.keyCode === 27);
+  }
+  if (isEscape && modal.style.display === 'block') {
+    modal.style.display = 'none';
+    modal.setAttribute('aria-hidden', 'true');
+    btn.focus(); // Set focus back to the button that opened the modal
+  }
+};
+</script>
+
+</body>
+</html>
